@@ -48,17 +48,25 @@ export interface OpenAIGenerationOptions {
   model?: string;
   baseUrl?: string;
   fetchImpl?: FetchImpl;
+  /**
+   * Provider id for display/observability. Defaults to `'openai'`, but any
+   * OpenAI-compatible host (Groq, Gemini's compat endpoint, OpenRouter) reuses
+   * this class with its own `baseUrl` — pass `id` so a failover chain can report
+   * *which* host served or failed, e.g. `['groq', 'gemini', 'openrouter']`.
+   */
+  id?: string;
 }
 
-/** OpenAI chat completions (streaming) — an override for the local generation default. */
+/** OpenAI-compatible chat completions (streaming). Reused for any host that speaks the same shape. */
 export class OpenAIGenerationProvider implements GenerationProvider {
-  readonly id = 'openai';
+  readonly id: string;
   readonly model: string;
   private readonly apiKey: string;
   private readonly baseUrl: string;
   private readonly fetchImpl: FetchImpl;
 
   constructor(opts: OpenAIGenerationOptions) {
+    this.id = opts.id ?? 'openai';
     this.apiKey = opts.apiKey;
     this.model = opts.model ?? 'gpt-4o-mini';
     this.baseUrl = (opts.baseUrl ?? DEFAULT_BASE).replace(/\/+$/, '');

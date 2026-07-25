@@ -26,6 +26,8 @@ export { OpenAIEmbeddingProvider, OpenAIGenerationProvider } from './providers/o
 export { VoyageEmbeddingProvider } from './providers/voyage';
 export { resolveEmbeddingProvider, resolveGenerationProvider } from './providers/resolve';
 export type { ProviderEnv } from './providers/resolve';
+export { FailoverGenerationProvider } from './providers/failover';
+export type { FailoverOptions } from './providers/failover';
 
 // RAG pipeline
 export { answerQuestion, buildRagPrompt, RAG_SYSTEM_PROMPT } from './rag';

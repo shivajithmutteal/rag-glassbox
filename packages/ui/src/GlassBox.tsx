@@ -10,6 +10,8 @@ export interface GlassBoxProps {
   onSubmit: () => void;
   loading?: boolean;
   suggestions?: string[];
+  /** Hard character cap on the query, mirrored server-side by the guardrail. */
+  maxQueryChars?: number;
 
   params: RetrievalParams;
   onParamsChange: (p: RetrievalParams) => void;
@@ -38,6 +40,7 @@ export function GlassBox(props: GlassBoxProps) {
     onSubmit,
     loading,
     suggestions = [],
+    maxQueryChars,
     params,
     onParamsChange,
     semanticDisabled,
@@ -58,14 +61,22 @@ export function GlassBox(props: GlassBoxProps) {
           e.preventDefault();
           onSubmit();
         }}
-        className="flex gap-2"
+        className="flex items-start gap-2"
       >
-        <input
-          value={query}
-          onChange={(e) => onQueryChange(e.target.value)}
-          placeholder="Ask the documents a question…"
-          className="flex-1 rounded-md border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-slate-500 dark:border-slate-600 dark:bg-slate-900"
-        />
+        <div className="flex-1">
+          <input
+            value={query}
+            onChange={(e) => onQueryChange(e.target.value)}
+            maxLength={maxQueryChars}
+            placeholder="Ask the documents a question…"
+            className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-slate-500 dark:border-slate-600 dark:bg-slate-900"
+          />
+          {maxQueryChars && query.length >= maxQueryChars * 0.8 && (
+            <div className="mt-1 pr-1 text-right text-[11px] text-slate-400">
+              {query.length}/{maxQueryChars}
+            </div>
+          )}
+        </div>
         <button
           type="submit"
           disabled={loading || !query.trim()}

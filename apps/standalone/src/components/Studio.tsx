@@ -15,6 +15,10 @@ const REPO_URL = 'https://github.com/shivajithmutteal/rag-glassbox';
 // show the "Generate answer" step, which calls the /api/answer route.
 const GENERATION_ENABLED = process.env.NEXT_PUBLIC_ENABLE_GENERATION === 'true';
 
+// Hard cap on the query length, mirrored server-side by the guardrail (the client
+// value is just UX — the server re-checks and never trusts it).
+const MAX_QUERY_CHARS = 500;
+
 const SUGGESTIONS: Record<string, string[]> = {
   cricket: [
     'How many players are on a team?',
@@ -111,6 +115,19 @@ export function Studio() {
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ corpusId, query, params, queryEmbedding }),
       });
+      // Guardrail (400) and rate-limit (429) rejections come back before any
+      // stream, as JSON — surface those in the error banner, not the answer panel.
+      if (!res.ok) {
+        let reason = `Request failed (${res.status}).`;
+        try {
+          const data = (await res.json()) as { error?: string };
+          if (data.error) reason = data.error;
+        } catch {
+          // non-JSON body — keep the generic reason
+        }
+        setError(reason);
+        return;
+      }
       const reader = res.body?.getReader();
       const decoder = new TextDecoder();
       if (reader) {
@@ -181,6 +198,7 @@ export function Studio() {
         onSubmit={runRetrieve}
         loading={loading}
         suggestions={SUGGESTIONS[corpusId] ?? []}
+        maxQueryChars={MAX_QUERY_CHARS}
         params={params}
         onParamsChange={setParams}
         corpusTitle={corpus?.title ?? 'Corpus'}
