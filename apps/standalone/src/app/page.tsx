@@ -1,24 +1,11 @@
-import { listCorpora, loadCorpus } from '@/lib/corpora';
 import { Studio } from '@/components/Studio';
 
-export const dynamic = 'force-dynamic';
+export const metadata = {
+  title: 'Glass-box RAG',
+  description:
+    'A retrieval-augmented-generation demo that makes the retrieval step visible — keyword, semantic, and hybrid, with similarity scores and the near-misses just below the cutoff. Runs entirely in the browser.',
+};
 
 export default function Home() {
-  const corpora = listCorpora();
-  if (corpora.length === 0) {
-    return (
-      <main className="mx-auto max-w-2xl p-8 text-sm text-slate-600 dark:text-slate-300">
-        No corpora built yet. Run{' '}
-        <code className="rounded bg-slate-200 px-1 dark:bg-slate-800">npm run build:corpus</code> at the
-        repo root, then reload.
-      </main>
-    );
-  }
-  const first = loadCorpus(corpora[0].id);
-  return (
-    <Studio
-      corpora={corpora}
-      initial={{ id: first.id, title: first.title, source: first.source }}
-    />
-  );
+  return <Studio />;
 }

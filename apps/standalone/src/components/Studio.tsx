@@ -1,10 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GlassBox } from '@rag-glassbox/ui';
-import type { RetrievalParams, RetrievalTrace } from '@rag-glassbox/engine';
+import { buildRagPrompt, retrieve } from '@rag-glassbox/engine';
+import type { Corpus, RetrievalParams, RetrievalTrace } from '@rag-glassbox/engine';
+import { embedQuery } from '@/lib/browser-embed';
+import { CORPORA, loadCorpus, loadEmbeddings } from '@/lib/corpora-client';
 
-const REPO_URL = 'https://github.com/';
+const REPO_URL = 'https://github.com/shivajithmutteal/rag-glassbox';
+
+// Retrieval runs entirely in the browser (BM25 + precomputed vectors + in-browser
+// query embedding), so this deploys anywhere as static + client, with no server AI.
+// Set NEXT_PUBLIC_ENABLE_GENERATION=true locally (with Ollama or an API key) to also
+// show the "Generate answer" step, which calls the /api/answer route.
+const GENERATION_ENABLED = process.env.NEXT_PUBLIC_ENABLE_GENERATION === 'true';
 
 const SUGGESTIONS: Record<string, string[]> = {
   cricket: [
@@ -27,24 +36,13 @@ const SUGGESTIONS: Record<string, string[]> = {
   ],
 };
 
-interface CorpusMeta {
-  id: string;
-  title: string;
-}
-
-interface StudioProps {
-  corpora: CorpusMeta[];
-  initial: { id: string; title: string; source: string };
-}
-
 function message(e: unknown): string {
   return e instanceof Error ? e.message : String(e);
 }
 
-export function Studio({ corpora, initial }: StudioProps) {
-  const [corpusId, setCorpusId] = useState(initial.id);
-  const [title, setTitle] = useState(initial.title);
-  const [source, setSource] = useState(initial.source);
+export function Studio() {
+  const [corpusId, setCorpusId] = useState(CORPORA[0].id);
+  const [corpus, setCorpus] = useState<Corpus | null>(null);
   const [query, setQuery] = useState('What is leg before wicket?');
   const [params, setParams] = useState<RetrievalParams>({
     mode: 'keyword',
@@ -58,44 +56,40 @@ export function Studio({ corpora, initial }: StudioProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function switchCorpus(id: string) {
-    if (id === corpusId) return;
-    setError(null);
+  // Load the selected corpus (source + chunks) from the static assets.
+  useEffect(() => {
+    let cancelled = false;
+    setCorpus(null);
     setTrace(null);
     setAnswer('');
-    setCorpusId(id);
-    try {
-      const res = await fetch(`/api/corpus?id=${encodeURIComponent(id)}`);
-      if (!res.ok) throw new Error((await res.json()).error ?? `HTTP ${res.status}`);
-      const data = await res.json();
-      setTitle(data.title);
-      setSource(data.source);
-    } catch (e) {
-      setError(message(e));
-    }
-  }
-
-  // Semantic/hybrid modes embed the query in the browser (same model as the corpus
-  // precompute); keyword mode needs no vector.
-  async function computeQueryEmbedding(): Promise<number[] | undefined> {
-    if (params.mode === 'keyword') return undefined;
-    const { embedQuery } = await import('@/lib/browser-embed');
-    return embedQuery(query);
-  }
+    setError(null);
+    loadCorpus(corpusId)
+      .then((c) => {
+        if (!cancelled) setCorpus(c);
+      })
+      .catch((e) => {
+        if (!cancelled) setError(message(e));
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [corpusId]);
 
   async function runRetrieve() {
+    if (!corpus || !query.trim()) return;
     setLoading(true);
     setError(null);
     setAnswer('');
     try {
-      const queryEmbedding = await computeQueryEmbedding();
-      const res = await fetch('/api/retrieve', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ corpusId, query, params, queryEmbedding }),
-      });
-      if (!res.ok) throw new Error((await res.json()).error ?? `HTTP ${res.status}`);
-      setTrace((await res.json()).trace);
+      let chunkEmbeddings: number[][] | undefined;
+      let queryEmbedding: number[] | undefined;
+      if (params.mode !== 'keyword') {
+        [chunkEmbeddings, queryEmbedding] = await Promise.all([
+          loadEmbeddings(corpusId),
+          embedQuery(query),
+        ]);
+      }
+      setTrace(retrieve({ query, chunks: corpus.chunks, params, chunkEmbeddings, queryEmbedding }));
     } catch (e) {
       setError(message(e));
     } finally {
@@ -103,12 +97,15 @@ export function Studio({ corpora, initial }: StudioProps) {
     }
   }
 
+  // Local-only (gated) full RAG loop: streams a grounded answer from /api/answer.
   async function runAnswer() {
+    if (!query.trim()) return;
     setStreaming(true);
     setAnswer('');
     setError(null);
     try {
-      const queryEmbedding = await computeQueryEmbedding();
+      let queryEmbedding: number[] | undefined;
+      if (params.mode !== 'keyword') queryEmbedding = await embedQuery(query);
       const res = await fetch('/api/answer', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
@@ -134,18 +131,19 @@ export function Studio({ corpora, initial }: StudioProps) {
     <main className="mx-auto max-w-7xl px-4 py-8">
       <header className="mb-6">
         <h1 className="text-2xl font-bold tracking-tight">Glass-box RAG</h1>
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+        <p className="mt-1 max-w-2xl text-sm text-slate-500 dark:text-slate-400">
           See the retrieval step — ranked chunks, scores, and the near-misses just below the cutoff —
-          not just the final answer.
+          not just the final answer. Flip between keyword (BM25), semantic, and hybrid and watch where
+          each one breaks on the same question. Runs entirely in your browser: no keys, no server calls.
         </p>
       </header>
 
       <div className="mb-4 flex flex-wrap items-center gap-2">
-        {corpora.map((c) => (
+        {CORPORA.map((c) => (
           <button
             key={c.id}
             type="button"
-            onClick={() => switchCorpus(c.id)}
+            onClick={() => setCorpusId(c.id)}
             className={`rounded-full px-3 py-1 text-xs font-medium ${
               c.id === corpusId
                 ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900'
@@ -155,16 +153,20 @@ export function Studio({ corpora, initial }: StudioProps) {
             {c.title}
           </button>
         ))}
-        <div className="grow" />
-        <button
-          type="button"
-          onClick={runAnswer}
-          disabled={!trace || streaming}
-          className="rounded-md border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700 disabled:opacity-40 dark:border-slate-600 dark:text-slate-200"
-          title="Runs the full RAG loop (needs a local model or an API key)"
-        >
-          {streaming ? 'Generating…' : 'Generate answer'}
-        </button>
+        {GENERATION_ENABLED && (
+          <>
+            <div className="grow" />
+            <button
+              type="button"
+              onClick={runAnswer}
+              disabled={!trace || streaming}
+              className="rounded-md border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700 disabled:opacity-40 dark:border-slate-600 dark:text-slate-200"
+              title="Runs the full RAG loop (needs a local model or an API key)"
+            >
+              {streaming ? 'Generating…' : 'Generate answer'}
+            </button>
+          </>
+        )}
       </div>
 
       {error && (
@@ -181,11 +183,13 @@ export function Studio({ corpora, initial }: StudioProps) {
         suggestions={SUGGESTIONS[corpusId] ?? []}
         params={params}
         onParamsChange={setParams}
-        corpusTitle={title}
-        source={source}
+        corpusTitle={corpus?.title ?? 'Corpus'}
+        source={corpus?.source ?? ''}
         trace={trace}
         answer={answer || undefined}
         streaming={streaming}
+        retrievalOnly={!GENERATION_ENABLED}
+        prompt={!GENERATION_ENABLED && trace ? buildRagPrompt(query, trace.results) : undefined}
         repoUrl={REPO_URL}
       />
     </main>
