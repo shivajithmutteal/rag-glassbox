@@ -12,6 +12,11 @@ export interface GlassBoxProps {
   suggestions?: string[];
   /** Hard character cap on the query, mirrored server-side by the guardrail. */
   maxQueryChars?: number;
+  /** When true, show the Retrieve-only / Retrieve+answer toggle and a "Run" button. */
+  generationEnabled?: boolean;
+  /** Which action the Run button performs. */
+  actionMode?: 'retrieve' | 'answer';
+  onActionModeChange?: (mode: 'retrieve' | 'answer') => void;
 
   params: RetrievalParams;
   onParamsChange: (p: RetrievalParams) => void;
@@ -43,6 +48,9 @@ export function GlassBox(props: GlassBoxProps) {
     loading,
     suggestions = [],
     maxQueryChars,
+    generationEnabled,
+    actionMode = 'answer',
+    onActionModeChange,
     params,
     onParamsChange,
     semanticDisabled,
@@ -57,8 +65,35 @@ export function GlassBox(props: GlassBoxProps) {
     answerNotice,
   } = props;
 
+  const busy = loading || streaming;
+  const showToggle = generationEnabled && onActionModeChange;
+
   return (
     <div className="flex flex-col gap-4">
+      {showToggle && (
+        <div className="inline-flex self-start overflow-hidden rounded-md border border-slate-300 text-xs dark:border-slate-600">
+          {(
+            [
+              ['retrieve', 'Retrieve only'],
+              ['answer', 'Retrieve + answer'],
+            ] as const
+          ).map(([mode, label]) => (
+            <button
+              key={mode}
+              type="button"
+              onClick={() => onActionModeChange?.(mode)}
+              className={`px-3 py-1 transition-colors ${
+                actionMode === mode
+                  ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900'
+                  : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
+
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -82,10 +117,16 @@ export function GlassBox(props: GlassBoxProps) {
         </div>
         <button
           type="submit"
-          disabled={loading || !query.trim()}
+          disabled={busy || !query.trim()}
           className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50 dark:bg-white dark:text-slate-900"
         >
-          {loading ? 'Retrieving…' : 'Retrieve'}
+          {busy
+            ? generationEnabled
+              ? 'Running…'
+              : 'Retrieving…'
+            : generationEnabled
+              ? 'Run'
+              : 'Retrieve'}
         </button>
       </form>
 

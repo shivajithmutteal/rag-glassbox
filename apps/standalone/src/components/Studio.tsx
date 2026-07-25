@@ -62,6 +62,8 @@ export function Studio() {
   // Soft, non-error notice shown in the Answer panel when generation is skipped
   // (e.g. rate-limited) — the page stays usable in retrieval-only mode.
   const [answerNotice, setAnswerNotice] = useState<string | null>(null);
+  // What the single "Run" button does: retrieval only, or retrieval + answer.
+  const [actionMode, setActionMode] = useState<'retrieve' | 'answer'>('answer');
 
   // Load the selected corpus (source + chunks) from the static assets.
   useEffect(() => {
@@ -154,6 +156,14 @@ export function Studio() {
     }
   }
 
+  // The single "Run" button. Retrieval is always client-side (free, instant);
+  // when the toggle is on "Retrieve + answer", the gated server generation runs
+  // right after, so the trace populates first and the answer streams into it.
+  async function handleRun() {
+    await runRetrieve();
+    if (GENERATION_ENABLED && actionMode === 'answer') await runAnswer();
+  }
+
   return (
     <main className="mx-auto max-w-7xl px-4 py-8">
       <header className="mb-6">
@@ -180,20 +190,6 @@ export function Studio() {
             {c.title}
           </button>
         ))}
-        {GENERATION_ENABLED && (
-          <>
-            <div className="grow" />
-            <button
-              type="button"
-              onClick={runAnswer}
-              disabled={!trace || streaming}
-              className="rounded-md border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700 disabled:opacity-40 dark:border-slate-600 dark:text-slate-200"
-              title="Runs the full RAG loop (needs a local model or an API key)"
-            >
-              {streaming ? 'Generating…' : 'Generate answer'}
-            </button>
-          </>
-        )}
       </div>
 
       {error && (
@@ -205,10 +201,13 @@ export function Studio() {
       <GlassBox
         query={query}
         onQueryChange={setQuery}
-        onSubmit={runRetrieve}
+        onSubmit={handleRun}
         loading={loading}
         suggestions={SUGGESTIONS[corpusId] ?? []}
         maxQueryChars={MAX_QUERY_CHARS}
+        generationEnabled={GENERATION_ENABLED}
+        actionMode={actionMode}
+        onActionModeChange={setActionMode}
         params={params}
         onParamsChange={setParams}
         corpusTitle={corpus?.title ?? 'Corpus'}
