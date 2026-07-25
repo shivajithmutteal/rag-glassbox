@@ -9,13 +9,19 @@ export interface AnswerPanelProps {
   /** The prompt retrieval assembled — shown as a disclosure in retrieval-only mode. */
   prompt?: string;
   repoUrl?: string;
+  /**
+   * A soft notice to show in place of an answer (no answer yet) — e.g. when
+   * generation is rate-limited and the page gracefully falls back to showing the
+   * retrieval trace only. Rendered as an info card, not an error.
+   */
+  notice?: string;
 }
 
 /**
  * Shows the generated answer, or — in the hosted retrieval-only demo — a CTA that
  * points at the repo, plus the exact prompt retrieval assembled.
  */
-export function AnswerPanel({ answer, streaming, retrievalOnly, prompt, repoUrl = '#' }: AnswerPanelProps) {
+export function AnswerPanel({ answer, streaming, retrievalOnly, prompt, repoUrl = '#', notice }: AnswerPanelProps) {
   return (
     <div className="flex h-full flex-col">
       <h2 className="mb-2 text-sm font-semibold text-slate-700 dark:text-slate-200">Answer</h2>
@@ -51,6 +57,20 @@ export function AnswerPanel({ answer, streaming, retrievalOnly, prompt, repoUrl 
               {answer}
               {streaming && <span className="ml-0.5 animate-pulse">▌</span>}
             </p>
+          ) : notice ? (
+            <div className="rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm dark:border-amber-800/60 dark:bg-amber-950/40">
+              <p className="font-medium text-amber-800 dark:text-amber-200">Generation paused</p>
+              <p className="mt-1 text-amber-700 dark:text-amber-300">{notice}</p>
+              <p className="mt-2 text-slate-500 dark:text-slate-400">
+                The retrieval trace on the right is still live — that&apos;s the part this demo is really about.
+              </p>
+              <a
+                href={repoUrl}
+                className="mt-3 inline-block rounded-md bg-slate-900 px-3 py-1.5 text-xs font-medium text-white hover:opacity-90 dark:bg-white dark:text-slate-900"
+              >
+                Run the full answer locally →
+              </a>
+            </div>
           ) : (
             <p className="text-slate-400">Ask a question to see a grounded, cited answer.</p>
           )}

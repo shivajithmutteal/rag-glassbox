@@ -12,7 +12,7 @@ import { Redis } from '@upstash/redis';
  * (See research-advance/internet-web/web-servers for the serverless write-up.)
  *
  * Two axes, four windows:
- *   - per-IP  (5/hour, 50/day)   → stops one visitor hammering the demo.
+ *   - per-IP  (10/hour, 50/day)  → stops one visitor hammering the demo.
  *   - global  (60/hour, 300/day) → the real wallet/quota protector; a circuit
  *     breaker across *everyone*, since per-IP limits are trivially bypassed with
  *     a VPN. 300/day split across the 3-provider failover chain is ~100 each,
@@ -40,7 +40,7 @@ function intFromEnv(value: string | undefined, fallback: number): number {
 
 export function defaultRateLimitConfig(env: Record<string, string | undefined> = process.env): RateLimitConfig {
   return {
-    ipHour: intFromEnv(env.RL_IP_HOUR, 5),
+    ipHour: intFromEnv(env.RL_IP_HOUR, 10),
     ipDay: intFromEnv(env.RL_IP_DAY, 50),
     globalHour: intFromEnv(env.RL_GLOBAL_HOUR, 60),
     globalDay: intFromEnv(env.RL_GLOBAL_DAY, 300),

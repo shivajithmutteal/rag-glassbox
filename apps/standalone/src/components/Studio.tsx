@@ -59,6 +59,9 @@ export function Studio() {
   const [streaming, setStreaming] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Soft, non-error notice shown in the Answer panel when generation is skipped
+  // (e.g. rate-limited) — the page stays usable in retrieval-only mode.
+  const [answerNotice, setAnswerNotice] = useState<string | null>(null);
 
   // Load the selected corpus (source + chunks) from the static assets.
   useEffect(() => {
@@ -67,6 +70,7 @@ export function Studio() {
     setTrace(null);
     setAnswer('');
     setError(null);
+    setAnswerNotice(null);
     loadCorpus(corpusId)
       .then((c) => {
         if (!cancelled) setCorpus(c);
@@ -83,6 +87,7 @@ export function Studio() {
     if (!corpus || !query.trim()) return;
     setLoading(true);
     setError(null);
+    setAnswerNotice(null);
     setAnswer('');
     try {
       let chunkEmbeddings: number[][] | undefined;
@@ -107,6 +112,7 @@ export function Studio() {
     setStreaming(true);
     setAnswer('');
     setError(null);
+    setAnswerNotice(null);
     try {
       let queryEmbedding: number[] | undefined;
       if (params.mode !== 'keyword') queryEmbedding = await embedQuery(query);
@@ -115,8 +121,11 @@ export function Studio() {
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ corpusId, query, params, queryEmbedding }),
       });
-      // Guardrail (400) and rate-limit (429) rejections come back before any
-      // stream, as JSON — surface those in the error banner, not the answer panel.
+      // Rejections come back before any stream, as JSON. A 429 (rate limit) is
+      // expected on a free demo — fall back to retrieval-only with a soft notice
+      // in the Answer panel, keeping the (already-computed) trace on screen. Other
+      // rejections (400 guardrail: too long / blocked / unsafe) are input problems,
+      // so those go to the error banner.
       if (!res.ok) {
         let reason = `Request failed (${res.status}).`;
         try {
@@ -125,7 +134,8 @@ export function Studio() {
         } catch {
           // non-JSON body — keep the generic reason
         }
-        setError(reason);
+        if (res.status === 429) setAnswerNotice(reason);
+        else setError(reason);
         return;
       }
       const reader = res.body?.getReader();
@@ -205,6 +215,7 @@ export function Studio() {
         source={corpus?.source ?? ''}
         trace={trace}
         answer={answer || undefined}
+        answerNotice={answerNotice ?? undefined}
         streaming={streaming}
         retrievalOnly={!GENERATION_ENABLED}
         prompt={!GENERATION_ENABLED && trace ? buildRagPrompt(query, trace.results) : undefined}

@@ -26,6 +26,8 @@ export interface GlassBoxProps {
   retrievalOnly?: boolean;
   prompt?: string;
   repoUrl?: string;
+  /** Soft notice shown in the Answer panel when generation is skipped (e.g. rate-limited). */
+  answerNotice?: string;
 }
 
 /**
@@ -52,6 +54,7 @@ export function GlassBox(props: GlassBoxProps) {
     retrievalOnly,
     prompt,
     repoUrl,
+    answerNotice,
   } = props;
 
   return (
@@ -115,6 +118,7 @@ export function GlassBox(props: GlassBoxProps) {
             retrievalOnly={retrievalOnly}
             prompt={prompt}
             repoUrl={repoUrl}
+            notice={answerNotice}
           />
         </section>
         <section className="max-h-[70vh] rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-700 dark:bg-slate-900">

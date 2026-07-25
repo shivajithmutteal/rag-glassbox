@@ -26,8 +26,9 @@ export interface FailoverOptions {
  * duplicated or contradicted. The rule is therefore **commit on first token**:
  *
  *   - Provider throws *before* emitting any token → fall through to the next one.
- *     This is the common case: the API rejects the request up front with a 429
- *     (rate limit) or 5xx, before streaming begins.
+ *     This is the common case: the API rejects the request up front — a 429 (rate
+ *     limit), a 404 (model id renamed/retired on a churning free tier), or a 5xx —
+ *     all before streaming begins, so the next provider transparently takes over.
  *   - Provider throws *after* emitting a token → rethrow. We're committed to that
  *     stream; failing over now would corrupt what the user already sees.
  *

@@ -135,7 +135,7 @@ to `openai/gpt-oss-safeguard-20b` for the purpose-built model).
   reachable over HTTP, which is what a short-lived function needs. (Vercel KV is
   Upstash under the hood.)
 - **Two axes, four windows:**
-  - Per-IP **5/hour, 50/day** — stops one visitor hammering the demo.
+  - Per-IP **10/hour, 50/day** — stops one visitor hammering the demo.
   - Global **60/hour, 300/day** — the real protector. Per-IP limits are trivially
     bypassed with a VPN, so a global circuit breaker is what actually bounds
     provider usage. 300/day across a 3-provider chain is ~100 each, far under any
@@ -144,6 +144,10 @@ to `openai/gpt-oss-safeguard-20b` for the purpose-built model).
   global token), then global. All four are env-tunable (`RL_*`).
 - **Graceful when unconfigured:** no Upstash URL/token → limiting is skipped (local
   dev), not an error.
+- **Client fallback on 429:** the UI treats a rate-limit as expected, not an error —
+  it keeps the retrieval trace on screen and shows a soft "Generation paused" notice
+  in the Answer panel (with a run-it-locally link), so the demo degrades to
+  retrieval-only instead of throwing a banner. Guardrail 400s still use the banner.
 
 ### 3.6 Runtime pinned to Node
 
@@ -181,7 +185,7 @@ Full list with defaults in `.env.example`. Secret values go in `.env.local`
 |-----------|--------------------|
 | Query too long / injection phrase | `400`, banner: filter message |
 | PII in query | Silently redacted; answer proceeds |
-| Per-IP or global limit hit | `429`, banner: "limit reached…" |
+| Per-IP or global limit hit | `429` → **retrieval-only fallback**: trace stays, Answer panel shows a soft "Generation paused" notice (no error banner) |
 | Query classified unsafe (Groq) | `400`, banner: safety message |
 | One provider down/limited | Transparent failover to the next |
 | All providers down | Inline `[error: …]` in the answer panel |
