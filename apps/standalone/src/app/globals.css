@@ -1,0 +1,4 @@
+@import "tailwindcss";
+
+/* Include the shared UI package so its utility classes are generated. */
+@source "../../../../packages/ui/src";

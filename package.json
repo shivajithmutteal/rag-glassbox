@@ -1,0 +1,26 @@
+{
+  "name": "rag-glassbox",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Glass-box RAG — a retrieval-augmented-generation demo that makes the retrieval step visible, not just the final answer.",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "test": "npm run test --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "import:corpus": "tsx scripts/import-corpus.ts",
+    "build:corpus": "tsx scripts/build-corpus.ts",
+    "build:embeddings": "tsx scripts/build-embeddings.ts",
+    "demo": "tsx scripts/demo.ts",
+    "demo:compare": "tsx scripts/demo-compare.ts"
+  },
+  "devDependencies": {
+    "@huggingface/transformers": "^4.2.0",
+    "tsx": "^4.19.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

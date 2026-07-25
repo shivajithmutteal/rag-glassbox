@@ -1,0 +1,25 @@
+# dependencies
+node_modules/
+
+# builds
+dist/
+.next/
+out/
+*.tsbuildinfo
+
+# test / coverage
+coverage/
+
+# local model / embedding caches
+.cache/
+.models/
+
+# env & secrets — never commit API keys
+.env
+.env.*
+!.env.example
+
+# logs & os
+*.log
+.DS_Store
+Thumbs.db

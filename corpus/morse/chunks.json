@@ -1,0 +1,217 @@
+{
+  "id": "morse",
+  "title": "International Morse Code and How to Learn It",
+  "source": "# International Morse Code and How to Learn It\n\n## What Morse Code Is\n\nMorse code is a method of encoding text characters as standardized sequences of two signal durations, traditionally called **dots** (short) and **dashes** (long), and also referred to as **dits** and **dahs** when spoken aloud. Each letter, digit, and punctuation mark is represented by a unique combination of these two elements. Because it needs only a single on/off channel, Morse code can be sent by almost any means capable of two states: an electrical telegraph key, a flashing light, a radio carrier switched on and off (continuous wave, or CW), a whistle, or even a hand tapping on a surface.\n\nThe version used worldwide today is **International Morse Code**, defined by the International Telecommunication Union (ITU) in Recommendation ITU-R M.1677. It differs from the earlier \"American Morse Code\" used on 19th-century US landline telegraphs. American Morse had some characters with internal spaces and different dash lengths; International Morse standardized every timing relationship, which is why it became the global standard for radio.\n\nKey properties:\n\n- It is a **variable-length code**: common letters get short sequences, rare letters get long ones. This is an early example of what information theory later formalized as efficient encoding.\n- It uses exactly **two symbols** (dot and dash) plus **silence** of varying lengths to separate elements, characters, and words.\n- It is fundamentally an **auditory/rhythmic** skill for humans, not a visual lookup skill — a fact that shapes every good learning method.\n\n## A Brief History\n\n- **1830s–1840s:** Samuel F. B. Morse, together with Alfred Vail, developed the electric telegraph and an associated code in the United States. Vail is credited with much of the practical letter-frequency design. The first famous public message, \"What hath God wrought,\" was sent in 1844 on the Washington–Baltimore line.\n- **1848 onward:** Friedrich Clemens Gerke revised the code for use in Germany and Austria. His cleaner, space-free version is the direct ancestor of the modern code.\n- **1865:** The International Telegraph Union adopted a standardized version close to Gerke's, becoming **International Morse Code**.\n- **Early 20th century:** With the rise of wireless (radio) telegraphy, Morse became the backbone of maritime and military communication. **SOS** was adopted as the international distress signal in 1906 (effective 1908).\n- **1999:** The maritime industry officially retired Morse for distress calling in favor of the satellite-based **Global Maritime Distress and Safety System (GMDSS)**.\n- **Today:** Morse remains widely used by amateur (ham) radio operators, is valued for its ability to punch through weak-signal and high-noise conditions, and is used in assistive technology for people with limited mobility.\n\n## Timing Rules\n\nAll of Morse code is built on a single base duration called the **unit** (or \"dit length\"). Every other duration is a fixed multiple of this unit. The speed of sending is simply the choice of how long one unit lasts; the *ratios* never change.\n\n| Element | Duration | Meaning |\n|---|---|---|\n| Dot (dit) | **1 unit** | Signal ON |\n| Dash (dah) | **3 units** | Signal ON |\n| Gap between elements within one character | **1 unit** | Signal OFF |\n| Gap between characters (letters) | **3 units** | Signal OFF |\n| Gap between words | **7 units** | Signal OFF |\n\nWorked example — the word **\"OK\"**:\n\n- **O** = dash dash dash: 3 + 1 + 3 + 1 + 3 = 11 units (the two internal 1-unit gaps separate the three dashes).\n- Then a **3-unit** inter-character gap.\n- **K** = dash dot dash: 3 + 1 + 1 + 1 + 3 = 9 units.\n- If another word follows, a **7-unit** gap separates it.\n\nBecause the ON and OFF durations are all multiples of one unit, Morse has a distinctive, learnable rhythm. Note that the inter-character and inter-word gaps *include* the trailing element gap in most accounting conventions; the practical rule to memorize is simply **1 / 3 / 3 / 7**: element gap 1, dash 3, character gap 3, word gap 7.\n\n### Measuring Speed\n\nSpeed is stated in **words per minute (WPM)**. The standard reference word is **PARIS**, chosen because it contains exactly **50 units** including the trailing word space. Therefore:\n\n- At 5 WPM, the sender transmits 250 units per minute, so one unit ≈ 240 ms.\n- At 20 WPM, one unit ≈ 60 ms.\n- The formula: **unit duration (ms) = 1200 / WPM**. At 20 WPM, 1200/20 = 60 ms per unit.\n\nAn alternative reference word, **CODEX**, equals 60 units and is sometimes used; PARIS is the more common standard.\n\n## The Letters A–Z\n\nThe accuracy of every sequence below is essential. Dots are `.` and dashes are `-`.\n\n| Letter | Code | Letter | Code |\n|---|---|---|---|\n| A | `.-` | N | `-.` |\n| B | `-...` | O | `---` |\n| C | `-.-.` | P | `.--.` |\n| D | `-..` | Q | `--.-` |\n| E | `.` | R | `.-.` |\n| F | `..-.` | S | `...` |\n| G | `--.` | T | `-` |\n| H | `....` | U | `..-` |\n| I | `..` | V | `...-` |\n| J | `.---` | W | `.--` |\n| K | `-.-` | X | `-..-` |\n| L | `.-..` | Y | `-.--` |\n| M | `--` | Z | `--..` |\n\nNotes on the most important patterns:\n\n- **E** is a single dot and **T** is a single dash — the two most common English letters get the shortest codes.\n- **I** = `..`, **M** = `--`, **S** = `...`, **O** = `---` are the pure double and triple forms.\n- **SOS** is therefore `... --- ...`, which is easy to recognize by rhythm.\n\n## The Digits 0–9\n\nThe digits follow a clean, regular pattern: each is five elements long, sweeping from all dots to all dashes.\n\n| Digit | Code |\n|---|---|\n| 1 | `.----` |\n| 2 | `..---` |\n| 3 | `...--` |\n| 4 | `....-` |\n| 5 | `.....` |\n| 6 | `-....` |\n| 7 | `--...` |\n| 8 | `---..` |\n| 9 | `----.` |\n| 0 | `-----` |\n\nThe pattern to remember: **1** starts with one dot then four dashes; each higher digit converts one more leading dash-position into a dot, so **5** is all dots and **0** is all dashes. **6** through **0** mirror this from the dash side.\n\n## Common Punctuation\n\nPunctuation marks are longer, generally six elements, and are used less frequently. The most common ones:\n\n| Character | Name | Code |\n|---|---|---|\n| `.` | Period (full stop) | `.-.-.-` |\n| `,` | Comma | `--..--` |\n| `?` | Question mark | `..--..` |\n| `'` | Apostrophe | `.----.` |\n| `!` | Exclamation mark | `-.-.--` |\n| `/` | Slash | `-..-.` |\n| `(` | Left parenthesis | `-.--.` |\n| `)` | Right parenthesis | `-.--.-` |\n| `&` | Ampersand | `.-...` |\n| `:` | Colon | `---...` |\n| `;` | Semicolon | `-.-.-.` |\n| `=` | Equals / double dash | `-...-` |\n| `+` | Plus | `.-.-.` |\n| `-` | Hyphen / minus | `-....-` |\n| `_` | Underscore | `..--.-` |\n| `\"` | Quotation mark | `.-..-.` |\n| `@` | At sign | `.--.-.` |\n\nThe **@** sign (`.--.-.`) was the most recent official addition, adopted by the ITU in 2004 to support email addresses. It is formally the letters **A** and **C** run together.\n\n## Prosigns and Distress Signals\n\n**Prosigns** (procedural signals) are special sequences sent as a single character — that is, with no inter-character gaps between their elements — even though they are written as two or more letters. They act as control codes for a transmission.\n\n| Prosign | Written as | Code (sent as one character) | Meaning |\n|---|---|---|---|\n| SOS | — | `...---...` | International distress call |\n| AR | `+` or `AR` | `.-.-.` | End of message |\n| SK | `SK` or `VA` | `...-.-` | End of contact / end of work |\n| KN | `KN` | `-.--.` | \"Go ahead, specific station only\" (invite named station to transmit) |\n| BT | `=` | `-...-` | Break / new paragraph separator |\n| AS | `AS` | `.-...` | Wait / stand by |\n| Error | `HH` | `........` | Mistake — disregard, restart the word |\n\n### SOS\n\n**SOS** = `...---...` sent as one continuous symbol (three dots, three dashes, three dots, with no character gaps). It was chosen purely because it is unmistakable and simple to send and recognize, **not** because it stands for \"Save Our Ship\" or \"Save Our Souls\" — those are later backronyms. It has been the international maritime distress signal since 1908.\n\n### The Error Signal\n\nTo correct a mistake, the sender transmits **eight dots** in a row (`........`), sometimes described as \"HH.\" The receiver understands that the current word was garbled and should be disregarded; the sender then repeats the word from the beginning.\n\n### AR and SK\n\n- **AR** (`.-.-.`) marks the **end of a complete message**.\n- **SK** (`...-.-`), also called **VA**, signals the **end of the entire contact** — the operator is finished and going off the air. New operators often confuse AR and SK; AR ends *this message*, SK ends *the conversation*.\n\n## Learning Methods\n\nThe single most important principle: **learn Morse by sound and rhythm, never by counting dots and dashes on a page.** The goal is to hear `-.-.` and instantly think \"C,\" the same way you hear a spoken word without spelling it out. Methods that reinforce visual counting build a habit you will later have to unlearn.\n\n### Why the Binary-Tree (Dichotomic) Chart Is a Poor Way to Learn\n\nA common beginner's aid is a tree/pyramid diagram: start at the top, go left for a dot and right for a dash, and follow the branches to a letter. It is a neat visualization of the code's structure, but it is a **bad learning tool** for three reasons:\n\n1. **It trains decoding, not recognition.** You end up mentally walking the tree element by element, which is far too slow for real copying. Fast operators recognize whole-character *sound patterns* instantly; tree-walkers stall.\n2. **It reinforces the wrong representation.** The tree is visual and sequential; real Morse is auditory and holistic. Every second spent tracing branches is a second not spent building sound-to-letter reflexes.\n3. **It creates a speed ceiling.** People who learn this way typically plateau around 5–10 WPM because conscious element-by-element decoding cannot scale. Retraining out of the habit is harder than learning correctly from the start.\n\nUse the tree, if at all, only as a one-time curiosity to *understand the structure*, then set it aside.\n\n### The Koch Method\n\nDeveloped by German psychologist **Ludwig Koch** in the 1930s, this method is built around learning at **full target speed from the very first lesson**.\n\nHow it works:\n\n1. Choose a target character speed — commonly **15–20 WPM** — and never slow the individual characters below it.\n2. Begin with just **two characters** (a classic starting pair is **K** and **M**, chosen because they are rhythmically distinct).\n3. Practice copying random groups of those two by ear until you reach about **90% accuracy**.\n4. Once you hit 90%, **add one new character** and drop back to practicing until you again reach 90%.\n5. Repeat, adding one character at a time, until all 40+ characters are mastered.\n\nThe Koch method works because it trains instant recognition at usable speed from day one, avoids the plateau problem, and gives a clear, measurable progression criterion (the 90% threshold). A typical learner can reach basic proficiency in a few weeks of daily practice.\n\n### The Farnsworth Timing Method\n\nThe **Farnsworth** method addresses a different problem: how to keep individual characters fast (so you learn the right rhythm) while still giving your brain time to react.\n\nThe trick is to **decouple the two speeds**:\n\n- **Character speed** is kept high (e.g., 18–20 WPM), so each letter *sounds* the way it will at full speed and you never learn a slowed-down, distorted rhythm.\n- **Overall/effective speed** is kept low (e.g., 5–10 WPM) by **stretching the gaps between characters and words**, not the elements within a character.\n\nFor example, you might send characters at 18 WPM but insert extra silence so the overall throughput is only 8 WPM. As you improve, you shrink the inter-character spacing until the character speed and overall speed converge at the target.\n\nFarnsworth timing is frequently combined with the Koch method: learn one new character at a time (Koch) at fast character speed with generous spacing (Farnsworth). This pairing is the modern gold standard and is what most training software (such as G4FON-style trainers, LCWO.net, and various apps) implements.\n\n### Listening Practice and Recommended Speeds\n\n- **Practice by ear, daily, in short sessions.** Fifteen to thirty focused minutes per day beats occasional long sessions.\n- **Copy random character groups first**, then move to real words, callsigns, and plain-language text. Random groups prevent you from guessing letters from context, forcing genuine recognition.\n- **Do not write down dots and dashes.** Write the decoded letter, or eventually just read along in your head (\"head copy\").\n- **Recommended character speed:** start at **15–20 WPM** character speed even as a beginner, using Farnsworth spacing to keep overall speed comfortable. Learning characters slower than ~13 WPM risks ingraining a \"counting\" habit.\n- **Sending practice** (using a key) should come *after* you can reliably receive, and should mimic the clean rhythm you have learned by ear. Good receiving builds good sending.\n- **Milestones:** roughly 5 WPM is enough to slowly copy simple text; 13 WPM was the classic amateur-radio proficiency benchmark; 20–25 WPM enables comfortable real-time conversation; expert operators exceed 40 WPM.\n\n## Common Abbreviations and Q-Codes\n\nTo save time, Morse operators (especially amateur radio) use a large set of abbreviations and standardized **Q-codes** (three-letter codes beginning with Q). The most common:\n\n| Abbreviation | Meaning |\n|---|---|\n| **CQ** | General call: \"Calling any station — anyone, please respond.\" |\n| **73** | \"Best regards\" (a friendly sign-off). Always singular — never \"73s.\" |\n| **88** | \"Love and kisses\" (affectionate sign-off). |\n| **QTH** | \"My location is…\" / \"What is your location?\" |\n| **QSL** | \"I acknowledge receipt\" / \"Do you acknowledge?\" |\n| **QRZ** | \"Who is calling me?\" |\n| **QRM** | Man-made interference. |\n| **QRN** | Natural (static) interference. |\n| **QSY** | \"Change frequency.\" |\n| **QRP** | Low power operation. |\n| **QRT** | \"Stop sending\" / \"I am closing down.\" |\n| **QSO** | A two-way contact/conversation. |\n| **DE** | \"From\" (separates the called station from the calling station; French *de*). |\n| **K** | \"Over — go ahead, any station may reply.\" |\n| **R** | \"Received / roger.\" |\n| **WX** | Weather. |\n| **OM / YL / XYL** | Old man (any male operator) / young lady / wife. |\n| **ES** | \"And\" (from American Morse). |\n| **PSE / TU / TNX** | Please / thank you / thanks. |\n\n### Anatomy of a Call\n\nA typical opening on the air reads: **`CQ CQ CQ DE W1AW W1AW K`** — meaning \"Calling anyone, this is station W1AW, go ahead.\" The Q-code system lets operators communicate precise procedural meaning across any language barrier, which is a large part of why Morse remained internationally practical for over a century.\n\n## Summary\n\nInternational Morse Code encodes text as dots and dashes governed by one simple set of ratios: **dot = 1 unit, dash = 3 units, intra-character gap = 1 unit, inter-character gap = 3 units, inter-word gap = 7 units**, with speed measured in WPM against the 50-unit reference word PARIS. Master the exact A–Z and 0–9 tables, recognize the key prosigns (**SOS** `...---...`, **AR** `.-.-.`, **SK** `...-.-`, error `........`), and — above all — **learn by sound**, using the **Koch** method (one character at a time at full speed to 90% accuracy) combined with **Farnsworth** spacing (fast characters, stretched gaps). Avoid the binary-tree chart as a learning crutch, practice listening every day, and pick up the common abbreviations like **CQ**, **QTH**, and **73** to communicate efficiently.\n",
+  "chunks": [
+    {
+      "id": "morse:0",
+      "corpusId": "morse",
+      "index": 0,
+      "text": "Morse code is a method of encoding text characters as standardized sequences of two signal durations, traditionally called **dots** (short) and **dashes** (long), and also referred to as **dits** and **dahs** when spoken aloud. Each letter, digit, and punctuation mark is represented by a unique combination of these two elements. Because it needs only a single on/off channel, Morse code can be sent by almost any means capable of two states: an electrical telegraph key, a flashing light, a radio carrier switched on and off (continuous wave, or CW), a whistle, or even a hand tapping on a surface.\n\nThe version used worldwide today is **International Morse Code**, defined by the International Telecommunication Union (ITU) in Recommendation ITU-R M.1677. It differs from the earlier \"American Morse Code\" used on 19th-century US landline telegraphs. American Morse had some characters with internal spaces and different dash lengths; International Morse standardized every timing relationship, which is why it became the global standard for radio.\n\nKey properties:",
+      "section": "International Morse Code and How to Learn It > What Morse Code Is",
+      "charStart": 71,
+      "charEnd": 1140,
+      "tokenCount": 167
+    },
+    {
+      "id": "morse:1",
+      "corpusId": "morse",
+      "index": 1,
+      "text": "- It is a **variable-length code**: common letters get short sequences, rare letters get long ones. This is an early example of what information theory later formalized as efficient encoding.\n- It uses exactly **two symbols** (dot and dash) plus **silence** of varying lengths to separate elements, characters, and words.\n- It is fundamentally an **auditory/rhythmic** skill for humans, not a visual lookup skill — a fact that shapes every good learning method.",
+      "section": "International Morse Code and How to Learn It > What Morse Code Is",
+      "charStart": 1141,
+      "charEnd": 1603,
+      "tokenCount": 71
+    },
+    {
+      "id": "morse:2",
+      "corpusId": "morse",
+      "index": 2,
+      "text": "- **1830s–1840s:** Samuel F. B. Morse, together with Alfred Vail, developed the electric telegraph and an associated code in the United States. Vail is credited with much of the practical letter-frequency design. The first famous public message, \"What hath God wrought,\" was sent in 1844 on the Washington–Baltimore line.\n- **1848 onward:** Friedrich Clemens Gerke revised the code for use in Germany and Austria. His cleaner, space-free version is the direct ancestor of the modern code.\n- **1865:** The International Telegraph Union adopted a standardized version close to Gerke's, becoming **International Morse Code**.\n- **Early 20th century:** With the rise of wireless (radio) telegraphy, Morse became the backbone of maritime and military communication. **SOS** was adopted as the international distress signal in 1906 (effective 1908).\n- **1999:** The maritime industry officially retired Morse for distress calling in favor of the satellite-based **Global Maritime Distress and Safety System (GMDSS)**.\n- **Today:** Morse remains widely used by amateur (ham) radio operators, is valued for its ability to punch through weak-signal and high-noise conditions, and is used in assistive technology for people with limited mobility.",
+      "section": "International Morse Code and How to Learn It > A Brief History",
+      "charStart": 1624,
+      "charEnd": 2861,
+      "tokenCount": 184
+    },
+    {
+      "id": "morse:3",
+      "corpusId": "morse",
+      "index": 3,
+      "text": "All of Morse code is built on a single base duration called the **unit** (or \"dit length\"). Every other duration is a fixed multiple of this unit. The speed of sending is simply the choice of how long one unit lasts; the *ratios* never change.\n\n| Element | Duration | Meaning |\n|---|---|---|\n| Dot (dit) | **1 unit** | Signal ON |\n| Dash (dah) | **3 units** | Signal ON |\n| Gap between elements within one character | **1 unit** | Signal OFF |\n| Gap between characters (letters) | **3 units** | Signal OFF |\n| Gap between words | **7 units** | Signal OFF |\n\nWorked example — the word **\"OK\"**:\n\n- **O** = dash dash dash: 3 + 1 + 3 + 1 + 3 = 11 units (the two internal 1-unit gaps separate the three dashes).\n- Then a **3-unit** inter-character gap.\n- **K** = dash dot dash: 3 + 1 + 1 + 1 + 3 = 9 units.\n- If another word follows, a **7-unit** gap separates it.",
+      "section": "International Morse Code and How to Learn It > Timing Rules",
+      "charStart": 2879,
+      "charEnd": 3740,
+      "tokenCount": 139
+    },
+    {
+      "id": "morse:4",
+      "corpusId": "morse",
+      "index": 4,
+      "text": "Because the ON and OFF durations are all multiples of one unit, Morse has a distinctive, learnable rhythm. Note that the inter-character and inter-word gaps *include* the trailing element gap in most accounting conventions; the practical rule to memorize is simply **1 / 3 / 3 / 7**: element gap 1, dash 3, character gap 3, word gap 7.",
+      "section": "International Morse Code and How to Learn It > Timing Rules",
+      "charStart": 3741,
+      "charEnd": 4077,
+      "tokenCount": 58
+    },
+    {
+      "id": "morse:5",
+      "corpusId": "morse",
+      "index": 5,
+      "text": "Speed is stated in **words per minute (WPM)**. The standard reference word is **PARIS**, chosen because it contains exactly **50 units** including the trailing word space. Therefore:\n\n- At 5 WPM, the sender transmits 250 units per minute, so one unit ≈ 240 ms.\n- At 20 WPM, one unit ≈ 60 ms.\n- The formula: **unit duration (ms) = 1200 / WPM**. At 20 WPM, 1200/20 = 60 ms per unit.\n\nAn alternative reference word, **CODEX**, equals 60 units and is sometimes used; PARIS is the more common standard.",
+      "section": "International Morse Code and How to Learn It > Timing Rules > Measuring Speed",
+      "charStart": 4099,
+      "charEnd": 4597,
+      "tokenCount": 83
+    },
+    {
+      "id": "morse:6",
+      "corpusId": "morse",
+      "index": 6,
+      "text": "The accuracy of every sequence below is essential. Dots are `.` and dashes are `-`.\n\n| Letter | Code | Letter | Code |\n|---|---|---|---|\n| A | `.-` | N | `-.` |\n| B | `-...` | O | `---` |\n| C | `-.-.` | P | `.--.` |\n| D | `-..` | Q | `--.-` |\n| E | `.` | R | `.-.` |\n| F | `..-.` | S | `...` |\n| G | `--.` | T | `-` |\n| H | `....` | U | `..-` |\n| I | `..` | V | `...-` |\n| J | `.---` | W | `.--` |\n| K | `-.-` | X | `-..-` |\n| L | `.-..` | Y | `-.--` |\n| M | `--` | Z | `--..` |\n\nNotes on the most important patterns:\n\n- **E** is a single dot and **T** is a single dash — the two most common English letters get the shortest codes.\n- **I** = `..`, **M** = `--`, **S** = `...`, **O** = `---` are the pure double and triple forms.\n- **SOS** is therefore `... --- ...`, which is easy to recognize by rhythm.",
+      "section": "International Morse Code and How to Learn It > The Letters A–Z",
+      "charStart": 4618,
+      "charEnd": 5423,
+      "tokenCount": 91
+    },
+    {
+      "id": "morse:7",
+      "corpusId": "morse",
+      "index": 7,
+      "text": "The digits follow a clean, regular pattern: each is five elements long, sweeping from all dots to all dashes.\n\n| Digit | Code |\n|---|---|\n| 1 | `.----` |\n| 2 | `..---` |\n| 3 | `...--` |\n| 4 | `....-` |\n| 5 | `.....` |\n| 6 | `-....` |\n| 7 | `--...` |\n| 8 | `---..` |\n| 9 | `----.` |\n| 0 | `-----` |\n\nThe pattern to remember: **1** starts with one dot then four dashes; each higher digit converts one more leading dash-position into a dot, so **5** is all dots and **0** is all dashes. **6** through **0** mirror this from the dash side.",
+      "section": "International Morse Code and How to Learn It > The Digits 0–9",
+      "charStart": 5443,
+      "charEnd": 5979,
+      "tokenCount": 74
+    },
+    {
+      "id": "morse:8",
+      "corpusId": "morse",
+      "index": 8,
+      "text": "Punctuation marks are longer, generally six elements, and are used less frequently. The most common ones:\n\n| Character | Name | Code |\n|---|---|---|\n| `.` | Period (full stop) | `.-.-.-` |\n| `,` | Comma | `--..--` |\n| `?` | Question mark | `..--..` |\n| `'` | Apostrophe | `.----.` |\n| `!` | Exclamation mark | `-.-.--` |\n| `/` | Slash | `-..-.` |\n| `(` | Left parenthesis | `-.--.` |\n| `)` | Right parenthesis | `-.--.-` |\n| `&` | Ampersand | `.-...` |\n| `:` | Colon | `---...` |\n| `;` | Semicolon | `-.-.-.` |\n| `=` | Equals / double dash | `-...-` |\n| `+` | Plus | `.-.-.` |\n| `-` | Hyphen / minus | `-....-` |\n| `_` | Underscore | `..--.-` |\n| `\"` | Quotation mark | `.-..-.` |\n| `@` | At sign | `.--.-.` |\n\nThe **@** sign (`.--.-.`) was the most recent official addition, adopted by the ITU in 2004 to support email addresses. It is formally the letters **A** and **C** run together.",
+      "section": "International Morse Code and How to Learn It > Common Punctuation",
+      "charStart": 6003,
+      "charEnd": 6891,
+      "tokenCount": 75
+    },
+    {
+      "id": "morse:9",
+      "corpusId": "morse",
+      "index": 9,
+      "text": "**Prosigns** (procedural signals) are special sequences sent as a single character — that is, with no inter-character gaps between their elements — even though they are written as two or more letters. They act as control codes for a transmission.\n\n| Prosign | Written as | Code (sent as one character) | Meaning |\n|---|---|---|---|\n| SOS | — | `...---...` | International distress call |\n| AR | `+` or `AR` | `.-.-.` | End of message |\n| SK | `SK` or `VA` | `...-.-` | End of contact / end of work |\n| KN | `KN` | `-.--.` | \"Go ahead, specific station only\" (invite named station to transmit) |\n| BT | `=` | `-...-` | Break / new paragraph separator |\n| AS | `AS` | `.-...` | Wait / stand by |\n| Error | `HH` | `........` | Mistake — disregard, restart the word |",
+      "section": "International Morse Code and How to Learn It > Prosigns and Distress Signals",
+      "charStart": 6926,
+      "charEnd": 7690,
+      "tokenCount": 97
+    },
+    {
+      "id": "morse:10",
+      "corpusId": "morse",
+      "index": 10,
+      "text": "**SOS** = `...---...` sent as one continuous symbol (three dots, three dashes, three dots, with no character gaps). It was chosen purely because it is unmistakable and simple to send and recognize, **not** because it stands for \"Save Our Ship\" or \"Save Our Souls\" — those are later backronyms. It has been the international maritime distress signal since 1908.",
+      "section": "International Morse Code and How to Learn It > Prosigns and Distress Signals > SOS",
+      "charStart": 7700,
+      "charEnd": 8061,
+      "tokenCount": 56
+    },
+    {
+      "id": "morse:11",
+      "corpusId": "morse",
+      "index": 11,
+      "text": "To correct a mistake, the sender transmits **eight dots** in a row (`........`), sometimes described as \"HH.\" The receiver understands that the current word was garbled and should be disregarded; the sender then repeats the word from the beginning.",
+      "section": "International Morse Code and How to Learn It > Prosigns and Distress Signals > The Error Signal",
+      "charStart": 8084,
+      "charEnd": 8333,
+      "tokenCount": 38
+    },
+    {
+      "id": "morse:12",
+      "corpusId": "morse",
+      "index": 12,
+      "text": "- **AR** (`.-.-.`) marks the **end of a complete message**.\n- **SK** (`...-.-`), also called **VA**, signals the **end of the entire contact** — the operator is finished and going off the air. New operators often confuse AR and SK; AR ends *this message*, SK ends *the conversation*.",
+      "section": "International Morse Code and How to Learn It > Prosigns and Distress Signals > AR and SK",
+      "charStart": 8349,
+      "charEnd": 8633,
+      "tokenCount": 43
+    },
+    {
+      "id": "morse:13",
+      "corpusId": "morse",
+      "index": 13,
+      "text": "The single most important principle: **learn Morse by sound and rhythm, never by counting dots and dashes on a page.** The goal is to hear `-.-.` and instantly think \"C,\" the same way you hear a spoken word without spelling it out. Methods that reinforce visual counting build a habit you will later have to unlearn.",
+      "section": "International Morse Code and How to Learn It > Learning Methods",
+      "charStart": 8655,
+      "charEnd": 8972,
+      "tokenCount": 55
+    },
+    {
+      "id": "morse:14",
+      "corpusId": "morse",
+      "index": 14,
+      "text": "A common beginner's aid is a tree/pyramid diagram: start at the top, go left for a dot and right for a dash, and follow the branches to a letter. It is a neat visualization of the code's structure, but it is a **bad learning tool** for three reasons:\n\n1. **It trains decoding, not recognition.** You end up mentally walking the tree element by element, which is far too slow for real copying. Fast operators recognize whole-character *sound patterns* instantly; tree-walkers stall.\n2. **It reinforces the wrong representation.** The tree is visual and sequential; real Morse is auditory and holistic. Every second spent tracing branches is a second not spent building sound-to-letter reflexes.\n3. **It creates a speed ceiling.** People who learn this way typically plateau around 5–10 WPM because conscious element-by-element decoding cannot scale. Retraining out of the habit is harder than learning correctly from the start.\n\nUse the tree, if at all, only as a one-time curiosity to *understand the structure*, then set it aside.",
+      "section": "International Morse Code and How to Learn It > Learning Methods > Why the Binary-Tree (Dichotomic) Chart Is a Poor Way to Learn",
+      "charStart": 9040,
+      "charEnd": 10072,
+      "tokenCount": 177
+    },
+    {
+      "id": "morse:15",
+      "corpusId": "morse",
+      "index": 15,
+      "text": "Developed by German psychologist **Ludwig Koch** in the 1930s, this method is built around learning at **full target speed from the very first lesson**.\n\nHow it works:\n\n1. Choose a target character speed — commonly **15–20 WPM** — and never slow the individual characters below it.\n2. Begin with just **two characters** (a classic starting pair is **K** and **M**, chosen because they are rhythmically distinct).\n3. Practice copying random groups of those two by ear until you reach about **90% accuracy**.\n4. Once you hit 90%, **add one new character** and drop back to practicing until you again reach 90%.\n5. Repeat, adding one character at a time, until all 40+ characters are mastered.\n\nThe Koch method works because it trains instant recognition at usable speed from day one, avoids the plateau problem, and gives a clear, measurable progression criterion (the 90% threshold). A typical learner can reach basic proficiency in a few weeks of daily practice.",
+      "section": "International Morse Code and How to Learn It > Learning Methods > The Koch Method",
+      "charStart": 10094,
+      "charEnd": 11057,
+      "tokenCount": 157
+    },
+    {
+      "id": "morse:16",
+      "corpusId": "morse",
+      "index": 16,
+      "text": "The **Farnsworth** method addresses a different problem: how to keep individual characters fast (so you learn the right rhythm) while still giving your brain time to react.\n\nThe trick is to **decouple the two speeds**:\n\n- **Character speed** is kept high (e.g., 18–20 WPM), so each letter *sounds* the way it will at full speed and you never learn a slowed-down, distorted rhythm.\n- **Overall/effective speed** is kept low (e.g., 5–10 WPM) by **stretching the gaps between characters and words**, not the elements within a character.\n\nFor example, you might send characters at 18 WPM but insert extra silence so the overall throughput is only 8 WPM. As you improve, you shrink the inter-character spacing until the character speed and overall speed converge at the target.\n\nFarnsworth timing is frequently combined with the Koch method: learn one new character at a time (Koch) at fast character speed with generous spacing (Farnsworth). This pairing is the modern gold standard and is what most training software (such as G4FON-style trainers, LCWO.net, and various apps) implements.",
+      "section": "International Morse Code and How to Learn It > Learning Methods > The Farnsworth Timing Method",
+      "charStart": 11092,
+      "charEnd": 12177,
+      "tokenCount": 180
+    },
+    {
+      "id": "morse:17",
+      "corpusId": "morse",
+      "index": 17,
+      "text": "- **Practice by ear, daily, in short sessions.** Fifteen to thirty focused minutes per day beats occasional long sessions.\n- **Copy random character groups first**, then move to real words, callsigns, and plain-language text. Random groups prevent you from guessing letters from context, forcing genuine recognition.\n- **Do not write down dots and dashes.** Write the decoded letter, or eventually just read along in your head (\"head copy\").\n- **Recommended character speed:** start at **15–20 WPM** character speed even as a beginner, using Farnsworth spacing to keep overall speed comfortable. Learning characters slower than ~13 WPM risks ingraining a \"counting\" habit.\n- **Sending practice** (using a key) should come *after* you can reliably receive, and should mimic the clean rhythm you have learned by ear. Good receiving builds good sending.\n- **Milestones:** roughly 5 WPM is enough to slowly copy simple text; 13 WPM was the classic amateur-radio proficiency benchmark; 20–25 WPM enables comfortable real-time conversation; expert operators exceed 40 WPM.",
+      "section": "International Morse Code and How to Learn It > Learning Methods > Listening Practice and Recommended Speeds",
+      "charStart": 12225,
+      "charEnd": 13292,
+      "tokenCount": 160
+    },
+    {
+      "id": "morse:18",
+      "corpusId": "morse",
+      "index": 18,
+      "text": "To save time, Morse operators (especially amateur radio) use a large set of abbreviations and standardized **Q-codes** (three-letter codes beginning with Q). The most common:\n\n| Abbreviation | Meaning |\n|---|---|\n| **CQ** | General call: \"Calling any station — anyone, please respond.\" |\n| **73** | \"Best regards\" (a friendly sign-off). Always singular — never \"73s.\" |\n| **88** | \"Love and kisses\" (affectionate sign-off). |\n| **QTH** | \"My location is…\" / \"What is your location?\" |\n| **QSL** | \"I acknowledge receipt\" / \"Do you acknowledge?\" |\n| **QRZ** | \"Who is calling me?\" |\n| **QRM** | Man-made interference. |\n| **QRN** | Natural (static) interference. |\n| **QSY** | \"Change frequency.\" |\n| **QRP** | Low power operation. |\n| **QRT** | \"Stop sending\" / \"I am closing down.\" |\n| **QSO** | A two-way contact/conversation. |\n| **DE** | \"From\" (separates the called station from the calling station; French *de*). |\n| **K** | \"Over — go ahead, any station may reply.\" |\n| **R** | \"Received / roger.\" |\n| **WX** | Weather. |\n| **OM / YL / XYL** | Old man (any male operator) / young lady / wife. |\n| **ES** | \"And\" (from American Morse). |\n| **PSE / TU / TNX** | Please / thank you / thanks. |",
+      "section": "International Morse Code and How to Learn It > Common Abbreviations and Q-Codes",
+      "charStart": 13330,
+      "charEnd": 14528,
+      "tokenCount": 152
+    },
+    {
+      "id": "morse:19",
+      "corpusId": "morse",
+      "index": 19,
+      "text": "A typical opening on the air reads: **`CQ CQ CQ DE W1AW W1AW K`** — meaning \"Calling anyone, this is station W1AW, go ahead.\" The Q-code system lets operators communicate precise procedural meaning across any language barrier, which is a large part of why Morse remained internationally practical for over a century.",
+      "section": "International Morse Code and How to Learn It > Common Abbreviations and Q-Codes > Anatomy of a Call",
+      "charStart": 14552,
+      "charEnd": 14869,
+      "tokenCount": 52
+    },
+    {
+      "id": "morse:20",
+      "corpusId": "morse",
+      "index": 20,
+      "text": "International Morse Code encodes text as dots and dashes governed by one simple set of ratios: **dot = 1 unit, dash = 3 units, intra-character gap = 1 unit, inter-character gap = 3 units, inter-word gap = 7 units**, with speed measured in WPM against the 50-unit reference word PARIS. Master the exact A–Z and 0–9 tables, recognize the key prosigns (**SOS** `...---...`, **AR** `.-.-.`, **SK** `...-.-`, error `........`), and — above all — **learn by sound**, using the **Koch** method (one character at a time at full speed to 90% accuracy) combined with **Farnsworth** spacing (fast characters, stretched gaps). Avoid the binary-tree chart as a learning crutch, practice listening every day, and pick up the common abbreviations like **CQ**, **QTH**, and **73** to communicate efficiently.",
+      "section": "International Morse Code and How to Learn It > Summary",
+      "charStart": 14882,
+      "charEnd": 15675,
+      "tokenCount": 122
+    }
+  ]
+}
