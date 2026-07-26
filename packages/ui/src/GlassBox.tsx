@@ -73,9 +73,8 @@ export function GlassBox(props: GlassBoxProps) {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          // Enter runs the primary action: generate if available, else retrieve.
-          if (showGenerate) onGenerate?.();
-          else onRetrieve();
+          // Enter runs the primary/default action: retrieve only. Generation is opt-in.
+          onRetrieve();
         }}
         className="flex flex-col gap-2"
       >
@@ -96,18 +95,18 @@ export function GlassBox(props: GlassBoxProps) {
             <>
               <button
                 type="button"
-                onClick={onRetrieve}
+                onClick={onGenerate}
                 disabled={!canRun}
                 className="rounded-md border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 disabled:opacity-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
               >
-                Retrieve only
+                {streaming ? 'Answering…' : 'Retrieve + answer'}
               </button>
               <button
                 type="submit"
                 disabled={!canRun}
                 className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50 dark:bg-white dark:text-slate-900"
               >
-                {streaming ? 'Answering…' : 'Retrieve + answer'}
+                Retrieve only
               </button>
             </>
           ) : (
