@@ -97,6 +97,7 @@ export function GlassBox(props: GlassBoxProps) {
                 type="button"
                 onClick={onGenerate}
                 disabled={!canRun}
+                title="Retrieve, then generate a grounded, cited answer from only the retrieved chunks. Streams from a free-tier model; rate-limited."
                 className="rounded-md border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 disabled:opacity-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
               >
                 {streaming ? 'Answering…' : 'Retrieve + answer'}
@@ -104,6 +105,7 @@ export function GlassBox(props: GlassBoxProps) {
               <button
                 type="submit"
                 disabled={!canRun}
+                title="Rank the chunks and show the trace — similarity scores and the near-misses below the cutoff — without generating an answer. Free and instant, runs in your browser."
                 className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50 dark:bg-white dark:text-slate-900"
               >
                 Retrieve only
@@ -113,6 +115,7 @@ export function GlassBox(props: GlassBoxProps) {
             <button
               type="submit"
               disabled={!canRun}
+              title="Rank the chunks and show the trace — similarity scores and the near-misses below the cutoff."
               className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50 dark:bg-white dark:text-slate-900"
             >
               {loading ? 'Retrieving…' : 'Retrieve'}
@@ -128,6 +131,7 @@ export function GlassBox(props: GlassBoxProps) {
               key={s}
               type="button"
               onClick={() => onQueryChange(s)}
+              title="Load this example question into the search box"
               className="rounded-full border border-slate-300 px-3 py-1 text-xs text-slate-600 hover:bg-slate-100 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-800"
             >
               {s}

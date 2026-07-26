@@ -165,11 +165,50 @@ export function Studio() {
     <main className="mx-auto max-w-7xl px-4 py-8">
       <header className="mb-6">
         <h1 className="text-2xl font-bold tracking-tight">Glass-box RAG</h1>
-        <p className="mt-1 max-w-2xl text-sm text-slate-500 dark:text-slate-400">
-          See the retrieval step — ranked chunks, scores, and the near-misses just below the cutoff —
-          not just the final answer. Flip between keyword (BM25), semantic, and hybrid and watch where
-          each one breaks on the same question. Runs entirely in your browser: no keys, no server calls.
-        </p>
+        <div className="group relative mt-1 max-w-2xl">
+          <p className="cursor-help text-sm text-slate-500 dark:text-slate-400">
+            Every RAG app shows you the answer and hides the retrieval. This one does the
+            opposite — watch each chunk get ranked and scored, catch the near-misses just below
+            the cutoff, and see exactly where keyword (BM25), semantic, and hybrid break on the
+            same question. Then stream a grounded, cited answer built from the sources it actually
+            retrieved.{' '}
+            <button
+              type="button"
+              className="whitespace-nowrap align-baseline text-[11px] font-medium text-slate-400 underline decoration-dotted underline-offset-2 outline-none transition-colors hover:text-slate-600 focus-visible:text-slate-600 dark:hover:text-slate-200"
+            >
+              ⓘ how it works
+            </button>
+          </p>
+
+          <div
+            role="tooltip"
+            className="pointer-events-none absolute left-0 top-full z-20 mt-2 w-[min(36rem,92vw)] translate-y-1 rounded-xl border border-slate-200 bg-white/95 p-4 text-xs leading-relaxed text-slate-600 opacity-0 shadow-xl backdrop-blur transition-all duration-150 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100 dark:border-slate-700 dark:bg-slate-900/95 dark:text-slate-300"
+          >
+            <p className="font-medium text-slate-700 dark:text-slate-200">Under the hood</p>
+            <ul className="mt-2 list-disc space-y-1.5 pl-4 marker:text-slate-300 dark:marker:text-slate-600">
+              <li>
+                <strong className="font-medium text-slate-700 dark:text-slate-200">Retrieval</strong> runs
+                entirely in your browser — BM25 for keyword, MiniLM embeddings for semantic, and a weighted
+                blend for hybrid. No keys, no setup.
+              </li>
+              <li>
+                <strong className="font-medium text-slate-700 dark:text-slate-200">The trace</strong> shows
+                every chunk with its similarity score, plus the near-misses that fell just below the top-k
+                cutoff — the step other RAG apps hide.
+              </li>
+              <li>
+                <strong className="font-medium text-slate-700 dark:text-slate-200">The answer</strong> is
+                generated from only the retrieved chunks and streamed with inline citations, on a free-tier
+                model with automatic failover.
+              </li>
+              <li>
+                <strong className="font-medium text-slate-700 dark:text-slate-200">Corpora</strong>: cricket,
+                football, and Morse code — compact, fact-checked docs where retrieval visibly succeeds and
+                fails.
+              </li>
+            </ul>
+          </div>
+        </div>
       </header>
 
       <div className="mb-4 flex flex-wrap items-center gap-2">
@@ -178,6 +217,7 @@ export function Studio() {
             key={c.id}
             type="button"
             onClick={() => setCorpusId(c.id)}
+            title={`Search the ${c.title} document set — swaps the corpus the query runs against`}
             className={`rounded-full px-3 py-1 text-xs font-medium ${
               c.id === corpusId
                 ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900'

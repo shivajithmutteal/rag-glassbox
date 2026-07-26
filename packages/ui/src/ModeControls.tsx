@@ -9,6 +9,15 @@ export interface ModeControlsProps {
 
 const MODES: RetrievalMode[] = ['keyword', 'semantic', 'hybrid'];
 
+/** Self-contained hover explanations for each retrieval mode. */
+const MODE_HELP: Record<RetrievalMode, string> = {
+  keyword:
+    'Keyword (BM25): ranks by exact word/term overlap. Precise for specific terms, but blind to synonyms and paraphrases.',
+  semantic:
+    'Semantic: ranks by embedding similarity (meaning). Catches paraphrases with no shared words, but can drift off exact terms.',
+  hybrid: 'Hybrid: blends the keyword and semantic scores — tune the balance with the semantic-weight slider.',
+};
+
 /** The live knobs: retrieval mode, top-k, and the hybrid fusion weight. */
 export function ModeControls({ params, onChange, semanticDisabled }: ModeControlsProps) {
   const semanticWeight = params.semanticWeight ?? 0.5;
@@ -29,7 +38,7 @@ export function ModeControls({ params, onChange, semanticDisabled }: ModeControl
                   ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900'
                   : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'
               } ${disabled ? 'cursor-not-allowed opacity-40' : ''}`}
-              title={disabled ? 'No embedding provider configured' : undefined}
+              title={disabled ? 'No embedding provider configured' : MODE_HELP[m]}
             >
               {m}
             </button>
@@ -37,7 +46,10 @@ export function ModeControls({ params, onChange, semanticDisabled }: ModeControl
         })}
       </div>
 
-      <label className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+      <label
+        title="Cutoff: how many top-ranked chunks to keep. Chunks ranked just below this line show as near-misses."
+        className="flex items-center gap-2 text-slate-600 dark:text-slate-300"
+      >
         top-k
         <input
           type="range"
@@ -50,7 +62,10 @@ export function ModeControls({ params, onChange, semanticDisabled }: ModeControl
       </label>
 
       {params.mode === 'hybrid' && (
-        <label className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+        <label
+          title="Hybrid mix: 0 = all keyword (BM25), 1 = all semantic. In between blends the two scores."
+          className="flex items-center gap-2 text-slate-600 dark:text-slate-300"
+        >
           semantic&nbsp;weight
           <input
             type="range"
