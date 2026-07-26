@@ -62,8 +62,6 @@ export function Studio() {
   // Soft, non-error notice shown in the Answer panel when generation is skipped
   // (e.g. rate-limited) — the page stays usable in retrieval-only mode.
   const [answerNotice, setAnswerNotice] = useState<string | null>(null);
-  // What the single "Run" button does: retrieval only, or retrieval + answer.
-  const [actionMode, setActionMode] = useState<'retrieve' | 'answer'>('answer');
 
   // Load the selected corpus (source + chunks) from the static assets.
   useEffect(() => {
@@ -156,12 +154,11 @@ export function Studio() {
     }
   }
 
-  // The single "Run" button. Retrieval is always client-side (free, instant);
-  // when the toggle is on "Retrieve + answer", the gated server generation runs
-  // right after, so the trace populates first and the answer streams into it.
-  async function handleRun() {
+  // "Retrieve + answer": client-side retrieval fills the trace (free, instant),
+  // then the gated server generation streams the answer into it.
+  async function runGenerate() {
     await runRetrieve();
-    if (GENERATION_ENABLED && actionMode === 'answer') await runAnswer();
+    await runAnswer();
   }
 
   return (
@@ -201,13 +198,12 @@ export function Studio() {
       <GlassBox
         query={query}
         onQueryChange={setQuery}
-        onSubmit={handleRun}
+        onRetrieve={runRetrieve}
+        onGenerate={GENERATION_ENABLED ? runGenerate : undefined}
         loading={loading}
         suggestions={SUGGESTIONS[corpusId] ?? []}
         maxQueryChars={MAX_QUERY_CHARS}
         generationEnabled={GENERATION_ENABLED}
-        actionMode={actionMode}
-        onActionModeChange={setActionMode}
         params={params}
         onParamsChange={setParams}
         corpusTitle={corpus?.title ?? 'Corpus'}

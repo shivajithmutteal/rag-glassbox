@@ -7,16 +7,16 @@ import { RetrievalTracePanel } from './RetrievalTracePanel';
 export interface GlassBoxProps {
   query: string;
   onQueryChange: (q: string) => void;
-  onSubmit: () => void;
+  /** Retrieve only (client-side). Also the Enter action when generation is off. */
+  onRetrieve: () => void;
+  /** Retrieve + generate. When set (and generationEnabled), shows the primary button and is the Enter action. */
+  onGenerate?: () => void;
   loading?: boolean;
   suggestions?: string[];
   /** Hard character cap on the query, mirrored server-side by the guardrail. */
   maxQueryChars?: number;
-  /** When true, show the Retrieve-only / Retrieve+answer toggle and a "Run" button. */
+  /** When true, show the "Retrieve + answer" primary button next to "Retrieve only". */
   generationEnabled?: boolean;
-  /** Which action the Run button performs. */
-  actionMode?: 'retrieve' | 'answer';
-  onActionModeChange?: (mode: 'retrieve' | 'answer') => void;
 
   params: RetrievalParams;
   onParamsChange: (p: RetrievalParams) => void;
@@ -44,13 +44,12 @@ export function GlassBox(props: GlassBoxProps) {
   const {
     query,
     onQueryChange,
-    onSubmit,
+    onRetrieve,
+    onGenerate,
     loading,
     suggestions = [],
     maxQueryChars,
     generationEnabled,
-    actionMode = 'answer',
-    onActionModeChange,
     params,
     onParamsChange,
     semanticDisabled,
@@ -66,68 +65,61 @@ export function GlassBox(props: GlassBoxProps) {
   } = props;
 
   const busy = loading || streaming;
-  const showToggle = generationEnabled && onActionModeChange;
+  const canRun = !busy && query.trim().length > 0;
+  const showGenerate = Boolean(generationEnabled && onGenerate);
 
   return (
     <div className="flex flex-col gap-4">
-      {showToggle && (
-        <div className="inline-flex self-start overflow-hidden rounded-md border border-slate-300 text-xs dark:border-slate-600">
-          {(
-            [
-              ['retrieve', 'Retrieve only'],
-              ['answer', 'Retrieve + answer'],
-            ] as const
-          ).map(([mode, label]) => (
-            <button
-              key={mode}
-              type="button"
-              onClick={() => onActionModeChange?.(mode)}
-              className={`px-3 py-1 transition-colors ${
-                actionMode === mode
-                  ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900'
-                  : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'
-              }`}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-      )}
-
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          onSubmit();
+          // Enter runs the primary action: generate if available, else retrieve.
+          if (showGenerate) onGenerate?.();
+          else onRetrieve();
         }}
-        className="flex items-start gap-2"
+        className="flex flex-col gap-2"
       >
-        <div className="flex-1">
-          <input
-            value={query}
-            onChange={(e) => onQueryChange(e.target.value)}
-            maxLength={maxQueryChars}
-            placeholder="Ask the documents a question…"
-            className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-slate-500 dark:border-slate-600 dark:bg-slate-900"
-          />
+        <input
+          value={query}
+          onChange={(e) => onQueryChange(e.target.value)}
+          maxLength={maxQueryChars}
+          placeholder="Ask the documents a question…"
+          className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-slate-500 dark:border-slate-600 dark:bg-slate-900"
+        />
+        <div className="flex items-center justify-end gap-2">
           {maxQueryChars && query.length >= maxQueryChars * 0.8 && (
-            <div className="mt-1 pr-1 text-right text-[11px] text-slate-400">
+            <span className="mr-auto text-[11px] text-slate-400">
               {query.length}/{maxQueryChars}
-            </div>
+            </span>
+          )}
+          {showGenerate ? (
+            <>
+              <button
+                type="button"
+                onClick={onRetrieve}
+                disabled={!canRun}
+                className="rounded-md border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 disabled:opacity-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800"
+              >
+                Retrieve only
+              </button>
+              <button
+                type="submit"
+                disabled={!canRun}
+                className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50 dark:bg-white dark:text-slate-900"
+              >
+                {streaming ? 'Answering…' : 'Retrieve + answer'}
+              </button>
+            </>
+          ) : (
+            <button
+              type="submit"
+              disabled={!canRun}
+              className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50 dark:bg-white dark:text-slate-900"
+            >
+              {loading ? 'Retrieving…' : 'Retrieve'}
+            </button>
           )}
         </div>
-        <button
-          type="submit"
-          disabled={busy || !query.trim()}
-          className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50 dark:bg-white dark:text-slate-900"
-        >
-          {busy
-            ? generationEnabled
-              ? 'Running…'
-              : 'Retrieving…'
-            : generationEnabled
-              ? 'Run'
-              : 'Retrieve'}
-        </button>
       </form>
 
       {suggestions.length > 0 && (
